@@ -17,7 +17,10 @@ const BookingResolver = {
       throw err;
     }
   },
-  bookEvent: async ({ eventID }) => {
+  bookEvent: async ({ eventID }, req) => {
+    if (!req.isAuth) {
+      throw new Error("Not Authorized!");
+    }
     try {
       const event = await Event.findById(eventID);
       if (!event) {
@@ -37,7 +40,10 @@ const BookingResolver = {
       throw err;
     }
   },
-  cancelBooking: async ({ bookingID }) => {
+  cancelBooking: async ({ bookingID }, req) => {
+    if (!req.isAuth) {
+      throw new Error("Not Authorized!");
+    }
     try {
       const booking = await Booking.findById(bookingID);
       if (!booking) {

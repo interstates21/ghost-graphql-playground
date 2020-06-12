@@ -3,7 +3,7 @@ const User = require("../../models/user");
 const { getUser, transformEvent } = require("./merge");
 
 const EventsResolver = {
-  events: async () => {
+  events: async (args, req) => {
     try {
       const events = await Event.find();
 
@@ -15,7 +15,10 @@ const EventsResolver = {
       throw err;
     }
   },
-  createEvent: async ({ eventInput }) => {
+  createEvent: async ({ eventInput }, req) => {
+    if (!req.isAuth) {
+      throw new Error("Not Authorized!");
+    }
     try {
       const event = new Event({
         title: eventInput.title,
