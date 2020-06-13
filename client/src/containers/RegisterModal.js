@@ -19,11 +19,21 @@ const REGISTER = gql`
 const RegisterModal = ({ open, setOpen }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [registerAsync, { loading, error, data }] = useMutation(REGISTER);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [registerAsync, { loading }] = useMutation(REGISTER);
   const [successAlert, setSuccessAlert] = useState(false);
 
   const handleSubmit = () => {
-    registerAsync({ variables: { email, password } });
+    registerAsync({ variables: { email, password } })
+      .then(data => {
+        setData(data);
+        setOpen(false);
+      })
+      .catch(err => {
+        setError(err);
+        setOpen(false);
+      });
   };
 
   useEffect(() => {

@@ -7,7 +7,8 @@ const UsersResolver = {
     const user = await User.findOne({ email });
 
     if (!user) {
-      throw new Error("User doesnt exist");
+        
+      // throw new Error("User doesnt exist");
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
